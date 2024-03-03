@@ -5,6 +5,7 @@ import { InvoiceView } from "./components/InvoiceView";
 import { ListItemsView } from "./components/ListItemsView";
 import { CompanyView } from "./components/companyView";
 import { TotalView } from "./components/TotalView";
+import { useState } from "react";
 
 
 
@@ -14,6 +15,10 @@ export const InvoiceApp = () => {
 
   const { total, id, name, client, company, items } = getInvoice();
 
+  const [productValue,setProductValue]=useState('');
+  const [priceValue,setPriceValue]=useState(0);
+  const [quantityValue,setQuantityValue]=useState(0);
+  
   return (
     <>
 
@@ -42,6 +47,7 @@ export const InvoiceApp = () => {
                           placeholder="Producto"
                           className="form-control m-3" onChange={event=>{
                             console.log(event.target.value);
+                            setProductValue(event.target.value)
                           }}/>
 
                       <input type="number"
@@ -49,12 +55,14 @@ export const InvoiceApp = () => {
                               placeholder="precio"
                               className="form-control m-3" onChange={event=>{
                                 console.log(event.target.value);
+                                setPriceValue(event.target.value);
                               }} />    
                       <input type="quantity"
                               name="cantidad"
                               placeholder="cantidad"
                               className="form-control m-3" onChange={event=>{
                                 console.log(event.target.value);
+                                setQuantityValue(event.target.value);
                               }} />         
                 </form>
           </div>
