@@ -13,11 +13,15 @@ export const InvoiceApp = () => {
 
   //const invoice = getInvoice();
 
-  const { total, id, name, client, company, items } = getInvoice();
+  const { total, id, name, client, company, items:itemsInicial } = getInvoice();
 
   const [productValue,setProductValue]=useState('');
-  const [priceValue,setPriceValue]=useState(0);
-  const [quantityValue,setQuantityValue]=useState(0);
+  const [priceValue,setPriceValue]=useState('');
+  const [quantityValue,setQuantityValue]=useState('');
+
+  const [items,setItems]=useState(itemsInicial);
+
+  const [counter,setCounter]=useState(4);
   
   return (
     <>
@@ -41,29 +45,50 @@ export const InvoiceApp = () => {
                 <ListItemsView title="Lista de factura" items={items}/>
                 <TotalView  total={total}/>
 
-                <form className="col-10">
+                <form className="w-50" onSubmit={event =>{
+                      event.preventDefault();
+                     
+                      if(productValue.trim().length <= 1) return; 
+                      if(priceValue.trim().length <= 1) return; 
+                      if(quantityValue.trim().length < 1) return; 
+
+                      setItems([...items,{id:counter, product:productValue,price:+priceValue,quantity:parseInt(quantityValue)}])
+                      
+                      setPriceValue('');
+                      setProductValue('');
+                      setQuantityValue('');
+                      setCounter(counter+1);
+
+                      }}>
                     <input type="text"
                           name="product"
+                          value={productValue}
                           placeholder="Producto"
                           className="form-control m-3" onChange={event=>{
                             console.log(event.target.value);
                             setProductValue(event.target.value)
                           }}/>
 
-                      <input type="number"
+                      <input type="text"
                               name="price"
+                              value={priceValue}
                               placeholder="precio"
                               className="form-control m-3" onChange={event=>{
                                 console.log(event.target.value);
                                 setPriceValue(event.target.value);
                               }} />    
-                      <input type="quantity"
+                      <input type="text"
                               name="cantidad"
+                              value={quantityValue}
                               placeholder="cantidad"
                               className="form-control m-3" onChange={event=>{
                                 console.log(event.target.value);
                                 setQuantityValue(event.target.value);
-                              }} />         
+                              }} />
+                        <button 
+                                type="submit" 
+                                className="btn btn-primary m-3">CNuevo Item</button>      
+
                 </form>
           </div>
         </div>
